@@ -1,0 +1,15 @@
+<div class="notification-container">
+  <div *ngFor="let notification of notifications"
+       class="notification"
+       [ngClass]="notification.type">
+    <div class="notification-icon">
+      <i class="fas" [ngClass]="getIcon(notification.type)"></i>
+    </div>
+    <div class="notification-content">
+      {{ notification.message }}
+    </div>
+    <button class="notification-close" (click)="removeNotification(notification)">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>

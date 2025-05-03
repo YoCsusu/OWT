@@ -1,0 +1,63 @@
+<div class="boat-detail" *ngIf="boat">
+  <div class="detail-header">
+    <h2>Détails du Bateau</h2>
+    <button class="btn btn-primary" (click)="toggleEdit()" [disabled]="isSaving">
+      <i class="fas" [ngClass]="isEditing ? 'fa-times' : 'fa-edit'"></i>
+      {{ isEditing ? 'Annuler' : 'Modifier' }}
+    </button>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+    <button type="button" class="btn-close float-end" (click)="error = null"></button>
+  </div>
+
+  <!-- Indicateur de chargement -->
+  <div *ngIf="isSaving" class="text-center py-3">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Enregistrement...</span>
+    </div>
+    <p class="mt-2">Enregistrement en cours...</p>
+  </div>
+
+  <!-- Mode affichage -->
+  <div class="card" *ngIf="!isEditing && !isSaving">
+    <div class="card-body">
+      <h3 class="boat-name">{{ boat.name }}</h3>
+      <div class="boat-id">ID: {{ boat.id }}</div>
+      <div class="boat-description">
+        <h4>Description:</h4>
+        <p>{{ boat.description || 'Aucune description disponible' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mode édition -->
+  <div class="edit-form" *ngIf="isEditing && !isSaving">
+    <div class="form-group">
+      <label for="boatName">Nom du bateau *</label>
+      <input type="text" class="form-control" id="boatName"
+             [(ngModel)]="editForm.name" required>
+      <small *ngIf="!editForm.name?.trim()" class="text-danger">
+        Le nom du bateau est requis
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="boatDescription">Description</label>
+      <textarea class="form-control" id="boatDescription" rows="5"
+                [(ngModel)]="editForm.description"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-success" (click)="saveChanges()"
+              [disabled]="!editForm.name?.trim()">
+        <i class="fas fa-save"></i> Enregistrer
+      </button>
+      <button class="btn btn-secondary" (click)="cancelEdit()">
+        <i class="fas fa-times"></i> Annuler
+      </button>
+    </div>
+  </div>
+</div>

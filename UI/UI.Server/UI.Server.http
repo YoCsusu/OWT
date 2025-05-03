@@ -1,0 +1,6 @@
+@UI.Server_HostAddress = http://localhost:5238
+
+GET {{UI.Server_HostAddress}}/boat/
+Accept: application/json
+
+###

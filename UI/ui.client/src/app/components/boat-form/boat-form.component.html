@@ -1,0 +1,47 @@
+<div class="boat-form">
+  <div class="form-header">
+    <h2>Ajouter un Bateau</h2>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+    <button type="button" class="btn-close float-end" (click)="error = null"></button>
+  </div>
+
+  <!-- Indicateur de chargement -->
+  <div *ngIf="isSubmitting" class="text-center py-3">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Ajout en cours...</span>
+    </div>
+    <p class="mt-2">Ajout du bateau en cours...</p>
+  </div>
+
+  <!-- Formulaire d'ajout -->
+  <form (ngSubmit)="addBoat()" *ngIf="!isSubmitting">
+    <div class="form-group">
+      <label for="boatName">Nom du bateau *</label>
+      <input type="text" class="form-control" id="boatName"
+             [(ngModel)]="newBoat.name" name="name" required>
+      <small *ngIf="!newBoat.name.trim()" class="text-danger">
+        Le nom du bateau est requis
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="boatDescription">Description</label>
+      <textarea class="form-control" id="boatDescription" rows="5"
+                [(ngModel)]="newBoat.description" name="description"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-success"
+              [disabled]="!newBoat.name.trim()">
+        <i class="fas fa-plus"></i> Ajouter
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">
+        <i class="fas fa-times"></i> Annuler
+      </button>
+    </div>
+  </form>
+</div>

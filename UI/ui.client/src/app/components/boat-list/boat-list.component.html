@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-5">
+      <div class="boat-list-header">
+        <h2>Liste des Bateaux</h2>
+        <button class="btn btn-primary" (click)="toggleAddForm()" [disabled]="loading">
+          <i class="fas fa-plus"></i> Nouveau Bateau
+        </button>
+      </div>
+
+      <!-- Message d'erreur -->
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+        <button type="button" class="btn-close float-end" (click)="error = null"></button>
+      </div>
+
+      <!-- Indicateur de chargement -->
+      <div *ngIf="loading" class="text-center py-3">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+        <p class="mt-2">Chargement des données...</p>
+      </div>
+
+      <!-- Liste des bateaux -->
+      <div class="boat-list" *ngIf="!loading">
+        <div class="card boat-card" *ngFor="let boat of boats$ | async"
+             (click)="selectBoat(boat)"
+             [class.active]="selectedBoat?.id === boat.id">
+          <div class="card-body">
+            <h5 class="card-title">{{ boat.name }}</h5>
+            <p class="card-text text-truncate">{{ boat.description }}</p>
+            <button class="btn btn-danger btn-sm delete-btn"
+                    (click)="deleteBoat(boat.id, $event)">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Message si liste vide -->
+        <div *ngIf="(boats$ | async)?.length === 0" class="empty-message">
+          Aucun bateau disponible
+          <button class="btn btn-outline-primary mt-3" (click)="refreshBoats()">
+            <i class="fas fa-sync-alt"></i> Rafraîchir
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-7">
+      <div class="detail-container">
+        <app-boat-form *ngIf="showAddForm" (boatAdded)="onBoatAdded()"></app-boat-form>
+        <app-boat-detail *ngIf="selectedBoat && !showAddForm" [boat]="selectedBoat"></app-boat-detail>
+        <div *ngIf="!selectedBoat && !showAddForm" class="select-message">
+          <i class="fas fa-ship fa-3x"></i>
+          <p>Sélectionnez un bateau pour voir les détails ou ajoutez-en un nouveau</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
